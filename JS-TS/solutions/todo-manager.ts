@@ -1,23 +1,40 @@
 import { TodoService } from './todo-service';
 import { TodoApi } from './todo-api';
-import { Todo } from './types';
+import { Todo, TodoStatus } from './types';
+import { InMemoryRepository } from './repository';
 
 export class ToDoManager {
-  private service = new TodoService(new TodoApi());
-
+  private api: TodoApi = null as unknown as TodoApi
+  private service: TodoService = null as unknown as TodoService
+  private repo: InMemoryRepository<Todo> = null as unknown as InMemoryRepository<Todo>
   async init(): Promise<void> {
-    throw new Error('init: not implemented');
+    this.repo = new InMemoryRepository<Todo>();
+    this.api = new TodoApi(this.repo);
+    this.service = new TodoService(this.api);
+    await this.service.create('title1', 'desc1');
+    await this.service.create('title2', 'desc2');
+    await this.service.create('title3', 'desc3');
+    await this.service.create('title4', 'desc4');
+    await this.service.create('title5', 'desc5');
+    await this.service.create('title6', 'desc6');
+
   }
 
   async add(title: string, description = ''): Promise<void> {
-    throw new Error('add: not implemented');
+    try {
+      await this.service.create(title, description);
+
+    } catch (error) {
+      throw error
+    }
   }
 
   async complete(id: number): Promise<void> {
-    throw new Error('complete: not implemented');
+    const todo = (await this.api.getAll()).find(obj => obj.id === id);
+    if (todo?.status !== TodoStatus.COMPLETED)
+      this.api.update(id, { status: TodoStatus.COMPLETED });
   }
-
   async list(): Promise<Todo[]> {
-    throw new Error('list: not implemented');
+    return await this.api.getAll();
   }
 }
