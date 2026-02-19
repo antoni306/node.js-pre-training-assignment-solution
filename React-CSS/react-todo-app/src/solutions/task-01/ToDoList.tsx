@@ -25,6 +25,7 @@ import { TodoListProps } from '../../types';
  * The component receives an array of todos as props and renders each one.
  */
 export const ToDoList: React.FC<TodoListProps> = ({ todos }) => {
+  const listItems = todos.map(element => (<li key={element.id}>{element.title} {element.completed ? 'completed' : 'not completed'}</li>));
   // TODO: Implement the ToDoList component
   // 
   // Requirements:
@@ -41,7 +42,11 @@ export const ToDoList: React.FC<TodoListProps> = ({ todos }) => {
 
   return (
     <div>
-      {/* TODO: Replace this with your implementation */}
+
+      <ul>
+        {listItems}
+      </ul>
+
       <h3>Todo List</h3>
       <p>Implement the ToDoList component here</p>
     </div>

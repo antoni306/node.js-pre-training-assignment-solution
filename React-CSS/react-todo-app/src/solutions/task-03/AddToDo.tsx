@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Todo } from '../../types';
-
+import { createTodo } from '../../../../../JS-TS/solutions/todo-factory'
+import { count } from 'console';
 /**
  * Task 3: AddToDo Component
  * 
@@ -35,6 +36,16 @@ import { Todo } from '../../types';
  * - Handle form submission properly
  */
 export const AddToDo: React.FC = () => {
+  const [title, setTitle] = useState('');
+  const [todos, setTodos] = useState<string[]>([])
+
+  const add = () => {
+    const t = title.trim()
+    if (!t)
+      return
+    setTodos([...todos, t]);
+    setTitle('');
+  }
   // TODO: Implement the AddToDo component
   // 
   // Requirements:
@@ -50,9 +61,13 @@ export const AddToDo: React.FC = () => {
 
   return (
     <div>
-      {/* TODO: Replace this with your implementation */}
-      <h4>Add ToDo Component</h4>
-      <p>Implement useState and form handling here</p>
+      <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
+      <br />
+      <button onClick={add}>Click me</button>
+      <ul>
+        {todos.map((title, i) => <li key={i}>{title}</li>)}
+      </ul>
+
     </div>
   );
 }; 
