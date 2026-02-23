@@ -47,8 +47,11 @@ export const ToDoItem: React.FC<TodoItemProps> = ({ todo }) => {
   // <ToDoItem todo={{ id: 1, title: 'Learn React', completed: true }} />
 
   return (
-    <div>
-      <span>{todo.title} - status: {todo.completed ? 'Done' : 'In progress'}</span>
+    <div style={{
+      textDecoration: todo.completed ? "line-through" : "none",
+      opacity: todo.completed ? 0.6 : 1
+    }}>
+      <span>{todo.title}</span>
     </div>
   );
 }; 
