@@ -56,12 +56,27 @@ export const CompleteToDoList: React.FC = () => {
   //     todo.id === id ? {...todo, completed: true} : todo
   //   ));
   // };
+  const [title, setTitle] = useState('');
+  const [todos, setTodos] = useState<Todo[]>([])
 
+  const add = () => {
+    const t = title.trim()
+    if (!t)
+      return
+    setTodos([...todos, { id: todos.length, title: t, completed: false }]);
+    setTitle('');
+  }
+  const changeStatus = (id: number) => {
+    setTodos(todos.map(obj => obj.id === id ? { ...obj, completed: !obj.completed } : obj));
+  }
   return (
     <div>
-      {/* TODO: Replace this with your implementation */}
-      <h4>Complete ToDo List Component</h4>
-      <p>Implement immutable state updates here</p>
+      <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
+      <br />
+      <button onClick={add}>Click me</button>
+      <ul>
+        {todos.map((todo, i) => <li key={i}>{todo.title} status: {todo.completed ? 'completed' : 'not completed'} <button onClick={() => changeStatus(todo.id)}>change status</button></li>)}
+      </ul>
     </div>
   );
 }; 
