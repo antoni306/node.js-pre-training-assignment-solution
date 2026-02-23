@@ -72,7 +72,7 @@ export const StyledToDoItem: React.FC<TodoItemProps> = ({ todo }) => {
   const classes = `todo-item ${todo.completed ? 'completed' : ''}`
   return (
     <div className={classes}>
-      {todo.title} <br></br>
+      {todo.title} <br />
       status:
       {todo.completed ? ' completed' : ' active'}
     </div>
