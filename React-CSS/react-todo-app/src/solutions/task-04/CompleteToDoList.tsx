@@ -63,11 +63,11 @@ export const CompleteToDoList: React.FC = () => {
     const t = title.trim()
     if (!t)
       return
-    setTodos([...todos, { id: todos.length, title: t, completed: false }]);
+    setTodos(prev => [...prev, { id: prev.length, title: t, completed: false }]);
     setTitle('');
   }
   const changeStatus = (id: number) => {
-    setTodos(todos.map(obj => obj.id === id ? { ...obj, completed: !obj.completed } : obj));
+    setTodos(prev => prev.map(obj => obj.id === id ? { ...obj, completed: !obj.completed } : obj));
   }
   return (
     <div>
