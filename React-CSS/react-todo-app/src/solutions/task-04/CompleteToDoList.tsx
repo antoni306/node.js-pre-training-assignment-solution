@@ -75,8 +75,8 @@ export const CompleteToDoList: React.FC = () => {
       <br />
       <button onClick={add}>Click me</button>
       <ul>
-        {todos.map((todo, i) => <li key={i}>{todo.title} status: {todo.completed ? 'completed' : 'not completed'} <button onClick={() => changeStatus(todo.id)}>change status</button></li>)}
+        {todos.map((todo, i) => <li key={i} style={todo.completed ? { textDecoration: "line-through" } : { textDecoration: "none" }}>{todo.title} <button onClick={() => changeStatus(todo.id)}>change status</button></li>)}
       </ul>
-    </div>
+    </div >
   );
 }; 
