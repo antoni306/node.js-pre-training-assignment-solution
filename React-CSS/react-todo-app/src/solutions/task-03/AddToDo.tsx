@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { Todo } from '../../types';
-import { createTodo } from '../../../../../JS-TS/solutions/todo-factory'
 import { count } from 'console';
 /**
  * Task 3: AddToDo Component
@@ -37,15 +36,21 @@ import { count } from 'console';
  */
 export const AddToDo: React.FC = () => {
   const [title, setTitle] = useState('');
-  const [todos, setTodos] = useState<string[]>([])
+  const [todos, setTodos] = useState<Todo[]>([]);
 
-  const add = () => {
-    const t = title.trim()
-    if (!t)
-      return
-    setTodos([...todos, t]);
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    const t = title.trim();
+    if (!t) return;
+
+    const newTodo: Todo = { title: t, id: todos.length, completed: false };
+
+    setTodos(prev => [...prev, newTodo]);
     setTitle('');
-  }
+  };
+
+
   // TODO: Implement the AddToDo component
   // 
   // Requirements:
@@ -61,13 +66,21 @@ export const AddToDo: React.FC = () => {
 
   return (
     <div>
-      <input type='text' value={title} onChange={(e) => setTitle(e.target.value)} />
-      <br />
-      <button onClick={add}>Click me</button>
-      <ul>
-        {todos.map((title, i) => <li key={i}>{title}</li>)}
-      </ul>
+      <form onSubmit={handleSubmit}>
+        <input
+          type="text"
+          placeholder="Add todo"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+        />
+        <button type="submit">Add</button>
+      </form>
 
+      <ul>
+        {todos.map(todo => (
+          <li key={todo.id}>{todo.title}</li>
+        ))}
+      </ul>
     </div>
   );
-}; 
+};
