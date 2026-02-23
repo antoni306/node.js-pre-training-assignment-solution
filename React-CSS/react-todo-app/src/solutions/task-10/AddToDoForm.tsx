@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Todo } from '../../types';
+import { title } from 'process';
 
 /**
  * Task 10: AddToDoForm Component
@@ -99,12 +100,26 @@ export const AddToDoForm: React.FC = () => {
   //   setTodos([...todos, newTodo]);
   //   setTitle('');
   // };
-
+  const [title, setTitle] = useState<string>('');
+  const [todos, settodos] = useState<Todo[]>([]);
+  const submitForm = (event: React.FormEvent) => {
+    event.preventDefault();
+    const t = title.trim();
+    if (!t)
+      return
+    settodos(prev => [...prev, { id: prev.length, title: t, completed: false }]);
+    setTitle('');
+  }
   return (
     <div>
-      {/* TODO: Replace this with your implementation */}
-      <h4>Add ToDo Form Component</h4>
-      <p>Implement controlled form handling here</p>
+      <form onSubmit={submitForm}>
+        <p>Title:</p>
+        <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} />
+        <button type='submit'>Submit</button>
+      </form>
+      <ul>
+        {todos.map(t => <li key={t.id}>{t.title}</li>)}
+      </ul>
     </div>
   );
 }; 
