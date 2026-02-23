@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Todo } from '../../types';
 
 /**
@@ -62,12 +62,47 @@ export const FilteredToDoList: React.FC = () => {
   //   if (filter === 'completed') return todo.completed;
   //   return true; // 'all' case
   // });
-
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [filter, setFilter] = useState<'all' | 'active' | 'completed'>('all');
+  const [title, setTitle] = useState<string>('');
+  const visibleTodos = useMemo(() => {
+    switch (filter) {
+      case 'all':
+        return todos;
+      case 'active':
+        return todos.filter(obj => !obj.completed)
+      case 'completed':
+        return todos.filter(obj => obj.completed)
+      default:
+        return []
+    }
+  }, [todos, filter]);
+  const addTodo = (e: React.FormEvent) => {
+    e.preventDefault();
+    const t = title.trim();
+    if (!t)
+      return;
+    const todo: Todo = { id: todos.length, title: t, completed: false }
+    setTodos(prev => [...prev, todo]);
+    setTitle('');
+  }
+  const changeStatus = (id: number) => {
+    setTodos(prev => prev.map(obj => obj.id === id ? { ...obj, completed: !obj.completed } : obj));
+  }
   return (
     <div>
-      {/* TODO: Replace this with your implementation */}
-      <h4>Filtered ToDo List Component</h4>
-      <p>Implement derived state and filtering here</p>
+      <form onSubmit={addTodo}>
+        <input type="text" onChange={(event) => setTitle(event.target.value)} />
+        <button type='submit'>Add todo</button>
+      </form>
+      <select value={filter} onChange={(e) => setFilter(e.target.value as 'all' | 'active' | 'completed')}>
+        <option value='all'>all</option>
+        <option value='completed'>completed</option>
+        <option value='active'>active</option>
+      </select>
+      <ul>
+        {visibleTodos.map(todo => <li key={todo.id} style={todo.completed ? { textDecoration: 'line-through' } : { textDecoration: 'none' }}>{todo.title} <button onClick={() => changeStatus(todo.id)}>change status</button></li>)}
+      </ul>
     </div>
   );
 }; 
