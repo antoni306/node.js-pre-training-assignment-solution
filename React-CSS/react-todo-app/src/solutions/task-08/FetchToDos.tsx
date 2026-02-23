@@ -72,28 +72,41 @@ export const FetchToDos: React.FC = () => {
   // 5. Use useEffect for data fetching
   // 
   // Example implementation:
-  // const [todos, setTodos] = useState<Todo[]>([]);
-  // const [loading, setLoading] = useState(true);
-  // const [error, setError] = useState<string | null>(null);
-  // 
-  // useEffect(() => {
-  //   fetch('https://jsonplaceholder.typicode.com/todos')
-  //     .then(response => response.json())
-  //     .then(data => {
-  //       setTodos(data.slice(0, 5)); // Limit to 5 todos
-  //       setLoading(false);
-  //     })
-  //     .catch(err => {
-  //       setError(err.message);
-  //       setLoading(false);
-  //     });
-  // }, []);
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos')
+      .then(response => response.json())
+      .then(async data => {
+        await delay(5000)
+        setTodos(data.slice(0, 5)); // Limit to 5 todos
+        setLoading(false);
+      })
+      .catch(err => {
+        setError(err.message);
+        setLoading(false);
+      });
+  }, []);
 
+  if (loading)
+    return (
+      <div>
+        'waiting for data'
+      </div>
+    );
+  if (error)
+    return (
+      <div>
+        {error}
+      </div>
+    );
   return (
     <div>
-      {/* TODO: Replace this with your implementation */}
-      <h4>Fetch ToDos Component</h4>
-      <p>Implement data fetching with useEffect here</p>
+      <ul>
+        {todos.map(obj => <li key={obj.id}>{obj.title}<br />status:<br />{obj.completed}</li>)}
+      </ul>
     </div>
   );
 }; 
