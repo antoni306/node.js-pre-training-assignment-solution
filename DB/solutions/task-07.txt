@@ -1,1 +1,7 @@
 relevant commit hash: bdf0ec0
+
+Installed and configured Sequelize ORM with PostgreSQL.
+Generated User and Todo models, created migrations, and applied database relationships using a foreign key.
+Implemented seed scripts to populate the database with sample users and todos.
+Encountered an issue with foreign key constraints because seeded todos referenced non-existing user IDs,
+which was fixed by retrieving user IDs dynamically from the database.
